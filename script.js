@@ -12,6 +12,8 @@ const budget = document.getElementById("budget").value;
 const projectType = document.getElementById("projectType").value;
 const message = document.getElementById("message").value.trim();
 const formMessage = document.getElementById("formMessage");
+const submitButton = document.getElementById("submitButton");
+
     if (
     name === "" ||
     email === "" ||
@@ -23,11 +25,17 @@ const formMessage = document.getElementById("formMessage");
     formMessage.className = "error";
     return;
 }
+submitButton.disabled = true;
+submitButton.textContent = "Sending...";
 
     formMessage.textContent = "Thank you! Your message is ready to be sent.";
     formMessage.className = "success";
-    contactForm.reset();
 
+    contactForm.reset();
+    setTimeout(function() {
+    submitButton.disabled = false;
+    submitButton.textContent = "Send Message";
+}, 1500);
 });
 function viewProject(project) {
     const title = document.getElementById("projectTitle");
