@@ -118,7 +118,8 @@ button {
 }
 
 .contact input,
-.contact textarea {
+.contact textarea,
+.contact select {
     width: 100%;
     padding: 15px;
     margin: 10px 0;
