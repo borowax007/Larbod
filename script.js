@@ -4,6 +4,7 @@ function contactMessage() {
 const contactForm = document.getElementById("contactForm");
 
 contactForm.addEventListener("submit", function(event) {
+    console.log("Form submitted");
     event.preventDefault();
 
 const name = document.getElementById("name").value.trim();
@@ -28,14 +29,41 @@ const submitButton = document.getElementById("submitButton");
 submitButton.disabled = true;
 submitButton.textContent = "Sending...";
 
-    formMessage.textContent = "Thank you! Your message is ready to be sent.";
+fetch("/contact", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        name: name,
+        email: email,
+        budget: budget,
+        project_type: projectType,
+        message: message
+    })
+})
+.then(response => response.json())
+.then(data => {
+
+    formMessage.textContent = "Message sent successfully!";
     formMessage.className = "success";
 
     contactForm.reset();
-    setTimeout(function() {
+
+})
+.catch(error => {
+
+    formMessage.textContent = "Something went wrong. Please try again.";
+    formMessage.className = "error";
+
+})
+.finally(() => {
+
     submitButton.disabled = false;
     submitButton.textContent = "Send Message";
-}, 1500);
+
+});
+
 });
 function viewProject(project) {
     const title = document.getElementById("projectTitle");
