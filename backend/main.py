@@ -4,6 +4,12 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from schemas import ContactCreate
+
+from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+
 from pydantic import BaseModel, EmailStr, Field
 
 
@@ -20,14 +26,6 @@ app.mount(
     StaticFiles(directory=BASE_DIR / "assets"),
     name="assets"
 )
-
-
-class ContactMessage(BaseModel):
-    name: str = Field(min_length=2, max_length=100)
-    email: EmailStr
-    budget: str
-    project_type: str
-    message: str = Field(min_length=10, max_length=2000)
 
 
 # Serve the Larbod website
@@ -50,7 +48,7 @@ def script():
 
 # Receive contact form
 @app.post("/contact")
-def create_contact(contact: ContactMessage):
+def create_contact(contact: ContactCreate):
 
     print("New contact message:")
     print(contact)
