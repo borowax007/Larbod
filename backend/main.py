@@ -1,24 +1,19 @@
 from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-
-from schemas import ContactCreate
-
-from fastapi import FastAPI
-from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
-
 from pydantic import BaseModel, EmailStr, Field
 
+from routers import contacts
 
 # Project root: Larbod/
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 app = FastAPI(title="Larbod")
-
+app.include_router(contacts.router)
 
 # Serve the assets folder
 app.mount(
@@ -44,16 +39,3 @@ def style():
 @app.get("/script.js")
 def script():
     return FileResponse(BASE_DIR / "script.js")
-
-
-# Receive contact form
-@app.post("/contact")
-def create_contact(contact: ContactCreate):
-
-    print("New contact message:")
-    print(contact)
-
-    return {
-        "message": "Contact message received",
-        "data": contact
-    }
